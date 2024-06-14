@@ -12,6 +12,7 @@
   - `test/`
     - `valid/`
     - `notvalid/`
+- `analyze.py` - Analyze some information about dataset.
 - `train.py` - Script to train the model.
 - `evaluate.py` - Script to evaluate the model.
 - `inference.py` - Script for model inference.
@@ -49,3 +50,5 @@ To run server AI API:
 ```
     python AI_api.py
 ```
+
+Go to `http://localhost:8000/docs` to test API
