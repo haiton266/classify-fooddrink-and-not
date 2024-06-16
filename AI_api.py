@@ -33,8 +33,7 @@ def predict_image_from_stream(img_stream):
         prediction = model.predict(x)
         confidence = prediction[0][0] if prediction[0][0] > 0.5 else 1 - \
             prediction[0][0]
-        result = "Food-Drink" if prediction[0][0] > 0.5 else "Not-Food-Drink"
-        return {'result': result, 'confidence': float(confidence)}
+        return True if prediction[0][0] > 0.5 else False
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
