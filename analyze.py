@@ -1,4 +1,5 @@
 import os
+from prettytable import PrettyTable
 
 
 def count_images(directory):
@@ -11,7 +12,7 @@ def count_images(directory):
 
 def analyze_dataset(base_path):
     subdirs = ['train/valid', 'train/notvalid', 'val/valid',
-               'val/notvalid', 'test/valid', 'test/notvalid']
+               'val/notvalid']
     results = {}
 
     for subdir in subdirs:
@@ -26,8 +27,13 @@ def analyze_dataset(base_path):
 
 
 if __name__ == "__main__":
-    base_path = 'dataset'
+    base_path = 'data'
     results = analyze_dataset(base_path)
 
+    # Create a PrettyTable
+    table = PrettyTable()
+    table.field_names = ["Subdirectory", "Image Count"]
     for subdir, count in results.items():
-        print(f"{subdir}: {count} images")
+        table.add_row([subdir, count])
+
+    print(table)
