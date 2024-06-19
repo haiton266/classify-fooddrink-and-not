@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
+from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 from io import BytesIO
 from starlette.concurrency import run_in_threadpool
@@ -9,6 +10,14 @@ from starlette.concurrency import run_in_threadpool
 app = FastAPI()
 
 # Asynchronous function to load the model
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Cho phép tất cả các nguồn
+    allow_credentials=True,
+    allow_methods=["*"],  # Cho phép tất cả các phương thức HTTP
+    allow_headers=["*"],  # Cho phép tất cả các headers
+)
 
 
 async def get_model():
@@ -33,7 +42,7 @@ def predict_image_from_stream(img_stream):
         prediction = model.predict(x)
         confidence = prediction[0][0] if prediction[0][0] > 0.5 else 1 - \
             prediction[0][0]
-        return True if prediction[0][0] > 0.5 else False
+        return {'result': True} if prediction[0][0] > 0.5 else {'result': False}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -52,4 +61,4 @@ async def create_upload_file(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
